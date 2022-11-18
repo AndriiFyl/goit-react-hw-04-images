@@ -6,16 +6,17 @@ import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal-root');
 
 export default function Modal(props) {
+  // метод класа для натискання по Esc
+  useEffect(() => {
+    console.log('effect');
+    document.addEventListener('keydown', closeByEscape);
+  }, []);
+
   const closeByEscape = event => {
     if (event.keyCode === 27) {
       props.closeModal();
     }
   };
-
-  // метод класа для натискання по Esc
-  useEffect(() => {
-    document.addEventListener('keydown', closeByEscape);
-  }, []);
 
   return createPortal(
     <div
@@ -76,3 +77,7 @@ export default function Modal(props) {
 //     );
 //   }
 // }
+
+// const handleCounterAIncrement = () => {
+//   setCounterA(counterA => counterA + 1);
+// };

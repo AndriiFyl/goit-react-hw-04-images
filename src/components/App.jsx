@@ -1,6 +1,8 @@
 // Хуки===============================================================
 import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { fetchImages } from 'services/api';
 import css from './App.module.css';
 import Searchbar from './Searchbar';
@@ -17,10 +19,16 @@ export default function App() {
   const [modalImage, setModalImage] = useState('');
   const [showModal, setShowModal] = useState(false);
 
+  // console.log(images);
+
   useEffect(() => {
     setIsLoading(true);
     fetchImages(query, page)
       .then(pictures => {
+        console.log(pictures);
+        if (pictures.length === 0) {
+          toast.error('no any pictures');
+        }
         setImages(page === 1 ? [...pictures] : [...images, ...pictures]);
       })
       .finally(() => {
@@ -53,7 +61,7 @@ export default function App() {
       <Searchbar onSubmit={handleSumbit} />
       {isLoading && <Loader />}
       <ImageGallery images={images} openModal={toggleModal} />
-      {images.length > 0 && <Button onLoadMore={handleLoadMore} />}
+      {images.length > 11 && <Button onLoadMore={handleLoadMore} />}
       {showModal && <Modal modalImage={modalImage} closeModal={toggleModal} />}
       <ToastContainer autoClose={2000} />
     </div>
